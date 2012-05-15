@@ -27,6 +27,8 @@ public class FailurePolicyTest {
       new Object[] { new Class[] { ClassWithFailedBeforeClassMethod.class }, 1, 1, 1 },
       new Object[] { new Class[] { ClassWithFailedBeforeMethodAndMultipleTests.class }, 2, 0, 2 },
       new Object[] { new Class[] { ClassWithFailedBeforeMethodAndMultipleInvocations.class }, 4, 0, 4 },
+      new Object[] { new Class[] { ClassWithFailedBeforeMethodAndParallelInvocationsMoreThanThreadCount.class }, 20, 0, 20 },
+      new Object[] { new Class[] { ClassWithFailedBeforeMethodAndParallelInvocationsLessThanThreadCount.class }, 12, 0, 12 },
       new Object[] { new Class[] { ExtendsClassWithFailedBeforeMethod.class }, 2, 2, 2 },
       new Object[] { new Class[] { ClassWithFailedBeforeClassMethod.class }, 1, 1, 1 },
       new Object[] { new Class[] { ExtendsClassWithFailedBeforeClassMethod.class }, 1, 2, 2 },
@@ -49,6 +51,7 @@ public class FailurePolicyTest {
     testng.addListener(tla);
     testng.setVerbose(0);
     testng.setConfigFailurePolicy(XmlSuite.CONTINUE);
+    testng.setDataProviderThreadCount(8);
     testng.run();
 
     verify(tla, configurationFailures, configurationSkips, skippedTests);
